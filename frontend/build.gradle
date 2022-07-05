@@ -30,6 +30,13 @@ allprojects {
     }
 }
 
+// tasks.named(':server:processResources') {
+//     it.mustRunAfter(tasks.named(':server:generateProto'))
+// }
+
+// tasks.named(':server:jar') {
+//     it.mustRunAfter(tasks.named(':archive:jar'))
+// }
 
 def javaProjects() {
     return subprojects.findAll();
@@ -46,6 +53,7 @@ configure(javaProjects()) {
 	apply from: file("${rootProject.projectDir}/tools/gradle/check.gradle")
 	apply from: file("${rootProject.projectDir}/tools/gradle/spotbugs.gradle")
 
+
     test {
         useTestNG() {
             suites 'testng.xml'
@@ -57,7 +65,7 @@ configure(javaProjects()) {
         }
     }
     test.finalizedBy(project.tasks.jacocoTestReport)
-
+    
     compileJava {
         options.compilerArgs << "-proc:none" << "-Xlint:all,-options,-static" << "-Werror"
     }

@@ -11,6 +11,22 @@ dependencies {
     testImplementation "org.testng:testng:${testng_version}"
 }
 
+// configurations {
+//     instrumentedClasspath {
+//         canBeConsumed = false
+//         canBeResolved = true
+//     }
+// }
+
+// dependencies {
+//     instrumentedClasspath(project(path: ":archive", configuration: 'instrumentedJars'))
+// }
+
+// tasks.named('processResources') {
+//     it.mustRunAfter(tasks.named(':server:generateProto'))
+// }
+// processResources.dependsOn('generateProto')
+// jar.dependsOn(':archive:jar')
 apply from: file("${project.rootProject.projectDir}/tools/gradle/proto.gradle")
 apply from: file("${project.rootProject.projectDir}/tools/gradle/launcher.gradle")
 
@@ -19,6 +35,8 @@ jar {
         attributes 'Main-Class': 'org.pytorch.serve.ModelServer'
     }
     includeEmptyDirs = false
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
     from configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
 
     exclude "META-INF/maven/**"

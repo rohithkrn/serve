@@ -81,7 +81,7 @@ class Linux(Common):
 
     def install_java(self):
         if os.system("javac --version") != 0 or args.force:
-            os.system(f"{self.sudo_cmd}apt-get install -y openjdk-11-jdk")
+            os.system(f"{self.sudo_cmd}apt-get install -y openjdk-17-jdk")
 
     def install_nodejs(self):
         if os.system("node -v") != 0 or args.force:
@@ -136,9 +136,9 @@ class Darwin(Common):
 
             os.system("brew tap AdoptOpenJDK/openjdk")
             if out >= "2.7":
-                os.system("brew install --cask adoptopenjdk11")
+                os.system("brew install --cask adoptopenjdk17")
             else:
-                os.system("brew cask install adoptopenjdk11")
+                os.system("brew cask install adoptopenjdk17")
 
     def install_nodejs(self):
         os.system("brew unlink node")

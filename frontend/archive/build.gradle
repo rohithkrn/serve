@@ -7,3 +7,14 @@ dependencies {
     testImplementation "commons-cli:commons-cli:${commons_cli_version}"
     testImplementation "org.testng:testng:${testng_version}"
 }
+
+// configurations {
+//     instrumentedJars {
+//         canBeConsumed = true
+//         canBeResolved = false
+//     }
+// }
+
+// artifacts {
+//     instrumentedJars(jar)
+// }
