@@ -58,9 +58,9 @@ FROM compile-image AS dev-image
 ARG MACHINE_TYPE=cpu
 ARG CUDA_VERSION
 RUN if [ "$MACHINE_TYPE" = "gpu" ]; then export USE_CUDA=1; fi \
-    # && git clone https://github.com/pytorch/serve.git \
+    && git clone https://github.com/rohithkrn/serve.git \
     && cd serve \
-    # && git checkout ${BRANCH_NAME} \
+    && git checkout jdk17_upgrade \
     && python3.8 -m venv /home/venv \
     && python -m pip install -U pip setuptools \
     && if [ -z "$CUDA_VERSION" ]; then python ts_scripts/install_dependencies.py --environment=dev; else python ts_scripts/install_dependencies.py --environment=dev  --cuda $CUDA_VERSION; fi \ 
