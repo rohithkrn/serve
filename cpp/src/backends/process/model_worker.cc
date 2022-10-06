@@ -13,6 +13,7 @@ namespace torchserve {
     const std::string& model_dir) {
     unsigned short socket_family;
     socket_family = AF_INET;
+    socket_type_ = socket_type;
     if (socket_type == "unix") {
       socket_family = AF_UNIX;
       if (socket_name.empty()) {
@@ -57,14 +58,15 @@ namespace torchserve {
     }
 
     sockaddr* srv_sock_address, client_sock_address{};
+    socklen_t name_len;
     if (socket_type_ == "unix") {
       TS_LOG(INFO, "Binding to unix socket");
       sockaddr_un sock_addr{};
       std::memset(&sock_addr, 0, sizeof(sock_addr));
       sock_addr.sun_family = AF_UNIX;
       std::strcpy(sock_addr.sun_path, socket_name_.c_str());
-      // TODO: Fix truncation of socket name to 14 chars when casting
       srv_sock_address = reinterpret_cast<sockaddr*>(&sock_addr);
+      name_len = SUN_LEN(&sock_addr);
     } else {
       TS_LOG(INFO, "Binding to tcp socket");
       sockaddr_in sock_addr{};
@@ -73,17 +75,18 @@ namespace torchserve {
       sock_addr.sin_port = port_;
       sock_addr.sin_addr.s_addr = inet_addr(socket_name_.c_str());
       srv_sock_address = reinterpret_cast<sockaddr*>(&sock_addr);
+      name_len = sizeof(*srv_sock_address);
     }
 
-    if (bind(server_socket_, srv_sock_address, sizeof(*srv_sock_address)) < 0) {
+    if (bind(server_socket_, srv_sock_address, name_len) < 0) {
       TS_LOGF(FATAL, "Could not bind socket. errno: {}", errno);
     }
     if (listen(server_socket_, 1) == -1) {
       TS_LOGF(FATAL, "Failed to listen on socket. errno: {}", errno);
     }
     TS_LOG(INFO, "Socket bind successful");
-    TS_LOGF(INFO, "[PID] {}", getpid());
-    TS_LOG(INFO, "Torchserve worker started.");
+    TS_LOGF(INFO, "[PID]{}", getpid());
+    TS_LOG(INFO, "Torch worker started.");
 
     while (true) {
       socklen_t len = sizeof(client_sock_address);
