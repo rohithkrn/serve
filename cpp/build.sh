@@ -270,6 +270,12 @@ function build() {
   fi
 }
 
+function copy_libs() {
+  if [ "$PLATFORM" = "Linux" ]; then
+    cp -r ${DEPS_DIR}/libtorch/lib/*.so* ${BUILD_DIR}/libs/
+  fi
+}
+
 # Parse args
 JOBS=8
 WITH_QUIC=false
@@ -339,3 +345,4 @@ install_folly
 install_kineto
 install_libtorch
 build
+copy_libs

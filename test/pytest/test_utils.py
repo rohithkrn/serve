@@ -57,11 +57,17 @@ def delete_model_store(model_store=None):
     for f in glob.glob(model_store + "/*.mar"):
         os.remove(f)
 
+def delete_intermediate_files(model_store=None):
+    model_store = model_store if model_store else MODEL_STORE
+    for f in glob.glob(model_store + "/*.bin"):
+        os.remove(f)
+
 
 def torchserve_cleanup():
     stop_torchserve()
     delete_model_store()
     delete_all_snapshots()
+    delete_intermediate_files()
 
 
 def register_model(model_name, url):
@@ -117,7 +123,8 @@ def model_archiver_command_builder(
     serialized_file=None,
     handler=None,
     extra_files=None,
-    force=False,
+    runtime=None,
+    force=False
 ):
     cmd = "torch-model-archiver"
 
@@ -138,6 +145,9 @@ def model_archiver_command_builder(
 
     if extra_files:
         cmd += " --extra-files {0}".format(extra_files)
+
+    if runtime:
+        cmd += " --runtime {0}".format(runtime)
 
     if force:
         cmd += " --force"
