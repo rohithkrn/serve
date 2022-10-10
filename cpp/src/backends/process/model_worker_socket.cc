@@ -14,7 +14,7 @@ DEFINE_string(device_type, "cpu", "cpu, or gpu");
 // TODO: discuss multiple backends support
 DEFINE_string(model_dir, "", "model path");
 // TODO: change to file based config
-DEFINE_string(logger_config_path, "./_build/resources/logging.config", "Logging config file path");
+DEFINE_string(logger_config_path, "/home/ubuntu/torchserve/serve/cpp/_build/resources/logging.config", "Logging config file path");
 
 int main(int argc, char* argv[]) {
   gflags::ParseCommandLineFlags(&argc, &argv, true);

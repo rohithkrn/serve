@@ -60,7 +60,7 @@ namespace torchserve {
         auto dtype_it = request.headers.find(torchserve::PayloadType::kHEADER_NAME_DATA_TYPE);
         if (data_it == request.parameters.end()) {
           data_it = request.parameters.find(torchserve::PayloadType::kPARAMETER_NAME_BODY);
-          dtype_it = request.headers.find(torchserve::PayloadType::kHEADER_NAME_BODY_TYPE);
+          dtype_it = request.headers.find(torchserve::PayloadType::kHEADER_NAME_DATA_TYPE);
         }
 
         if (data_it == request.parameters.end() || 
