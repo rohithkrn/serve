@@ -282,9 +282,9 @@ function build() {
   fi
 }
 
-function copy_libs() {
+function symlink_torch_libs() {
   if [ "$PLATFORM" = "Linux" ]; then
-    cp -r ${DEPS_DIR}/libtorch/lib/*.so* ${BUILD_DIR}/libs/
+    ln -sf ${DEPS_DIR}/libtorch/lib/*.so* ${BUILD_DIR}/libs/
   fi
 }
 
@@ -357,4 +357,4 @@ install_folly
 install_kineto
 install_libtorch
 build
-copy_libs
+symlink_torch_libs
