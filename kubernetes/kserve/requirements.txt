@@ -5,3 +5,4 @@ captum
 grpcio
 protobuf
 grpcio-tools
+setuptools==69.5.1
